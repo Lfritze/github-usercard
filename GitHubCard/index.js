@@ -7,6 +7,10 @@ const masterCard = document.querySelector('.cards');
   axios.get('https://api.github.com/users/Lfritze')
     .then( response => {
       console.log(response.data);
+      masterCard.appendChild(cardBuilder(response.data));
+    })
+    .catch (error => {
+      console.log('Error in returning data', error);
     })
 //******************************************************* */
 /* Step 2: Inspect and study the data coming back, this is YOUR 
