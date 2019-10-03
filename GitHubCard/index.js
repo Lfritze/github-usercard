@@ -5,38 +5,32 @@
 
 const masterCard = document.querySelector('.cards');
   axios.get('https://api.github.com/users/Lfritze')
-    .then( response => {
+    .then((response) => {
       console.log(response.data);
       masterCard.appendChild(cardBuilder(response.data));
     })
     .catch (error => {
       console.log('Error in returning data', error);
     })
-//******************************************************* */
-/* Step 2: Inspect and study the data coming back, this is YOUR 
-   github info! You will need to understand the structure of this 
-   data in order to use it to build your component function 
 
-   // See file /GitHubCard/GitHubAxiosInfo.md/
-   I copied and pasted what was returned in the console in my browser
-//****************************************************** */
-  // Skip to Step 3.
+const followersArray = [
+  'vivaCode',
+  'BlueImport',
+  'MrT3313',
+  "BaoPham92",
+  "mxxt1",
+];
 
-/* Step 4: Pass the data received from Github into your function, 
-           create a new component and add it to the DOM as a child of .cards
-*/
-
-/* Step 5: Now that you have your own card getting added to the DOM, either 
-          follow this link in your browser https://api.github.com/users/<Your github name>/followers 
-          , manually find some other users' github handles, or use the list found 
-          at the bottom of the page. Get at least 5 different Github usernames and add them as
-          Individual strings to the friendsArray below.
-          
-          Using that array, iterate over it, requesting data for each user, creating a new card for each
-          user, and adding that card to the DOM.
-*/
-
-const followersArray = [];
+followersArray.forEach(peopleName => {
+  axios.get(`https://api.github.com/users/${peopleName}`)
+  .then(response => {
+    masterCard.appendChild(cardBuilder(response.data))
+    console.log(response.data)
+  })
+  .catch (error => {
+    console.log("The data was not returned", error);
+  })
+})
 
 
 // Step 3 *****************************************
@@ -59,6 +53,28 @@ function cardBuilder(object) {
       const followingP = document.createElement('p')//<p>Following: {users following count}</p>
       const usersBioP = document.createElement('p');//<p>Bio: {users bio}</p>
 
+        // SET CLASS NAMES - .classList.add()
+  // classes include: card, card-info, name, username.
+  // card = cardDiv, card-info = cardInfoDiv, name = nameH3, username = userNameP
+  cardDiv.classList.add('card');
+  cardInfoDiv.classList.add('card-info');
+  nameH3.classList.add('name');
+  userNameP.classList.add('username');
+
+    // SET CONTENT - .textContent = object.thing
+  // newPic.src, nameH3, userNameP, locationP, profileP, gitHubAddress, followersP, followingP, usersBioP
+  //use object as argument
+  newPic.src = object.avatar_url;
+  nameH3.textContent = object.name;
+  userNameP.textContent = object.login; //login: "Lfritze"
+  locationP.textContent = `Location: ${object.location || 'null'}`; 
+  profileP.textContent = `Profile: `;
+  gitHubAddress.textContent = object.html_url; // fixing link here ??
+  gitHubAddress.href = object.html_url;
+  followersP.textContent = `Followers: ${object.followers}`;
+  followingP.textContent = `Following ${object.following}`;
+  usersBioP.textContent = `Bio: ${object.bio || 'null'}`;
+
   // SET STRUCTURE - appendChild()
   cardDiv.appendChild(newPic);
   cardDiv.appendChild(cardInfoDiv);
@@ -70,28 +86,12 @@ function cardBuilder(object) {
     cardInfoDiv.appendChild(followersP);
     cardInfoDiv.appendChild(followingP);
     cardInfoDiv.appendChild(usersBioP);
+    
 
 
-  // SET CLASS NAMES - .classList.add()
-  // classes include: card, card-info, name, username.
-  // card = cardDiv, card-info = cardInfoDiv, name = nameH3, username = userNameP
-  cardDiv.classList.add('card');
-  cardInfoDiv.classList.add('card-info');
-  nameH3.classList.add('name');
-  userNameP.classList.add('user-name');
 
-  // SET CONTENT - .textContent = object.thing
-  // newPic.src, nameH3, userNameP, locationP, profileP, gitHubAddress, followersP, followingP, usersBioP
-  //use object as argument
-  newPic.src = object.avatar_url;
-  nameH3.textContent = object.name;
-  userNameP.textContent = object.login; //login: "Lfritze"
-  locationP.textContent = `Location: ${object.location || 'null'}`; 
-  profileP.textContent = `Profile: `
-  gitHubAddress.href = object.html_url;
-  followersP.textContent = `Followers: ${object.followers}`;
-  followingP.textContent = `Following ${object.following}`;
-  usersBioP.textContent = `Bio: ${object.bio || 'null'}`;
+
+
 
   return cardDiv;
 }
@@ -124,4 +124,28 @@ function cardBuilder(object) {
   justsml
   luishrd
   bigknell
+*/
+
+//******************************************************* */
+/* Step 2: Inspect and study the data coming back, this is YOUR 
+   github info! You will need to understand the structure of this 
+   data in order to use it to build your component function 
+
+   // See file /GitHubCard/GitHubAxiosInfo.md/
+   I copied and pasted what was returned in the console in my browser
+//****************************************************** */
+  // Skip to Step 3.
+
+/* Step 4: Pass the data received from Github into your function, 
+           create a new component and add it to the DOM as a child of .cards
+*/
+
+/* Step 5: Now that you have your own card getting added to the DOM, either 
+          follow this link in your browser https://api.github.com/users/<Your github name>/followers 
+          , manually find some other users' github handles, or use the list found 
+          at the bottom of the page. Get at least 5 different Github usernames and add them as
+          Individual strings to the friendsArray below.
+          
+          Using that array, iterate over it, requesting data for each user, creating a new card for each
+          user, and adding that card to the DOM.
 */
