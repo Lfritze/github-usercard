@@ -8,13 +8,15 @@ const masterCard = document.querySelector('.cards');
     .then( response => {
       console.log(response.data);
     })
-
+//******************************************************* */
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
 
-   Skip to Step 3.
-*/
+   // See file /GitHubCard/GitHubAxiosInfo.md/
+   I copied and pasted what was returned in the console in my browser
+//****************************************************** */
+  // Skip to Step 3.
 
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
@@ -32,8 +34,68 @@ const masterCard = document.querySelector('.cards');
 
 const followersArray = [];
 
+
+// Step 3 *****************************************
+//accepts a single object as its only argument
+
+function cardBuilder(object) {
+  //DEFINE - document.createElement()
+  const cardDiv = document.createElement('div'); //<div class="card">
+    //carDiv children
+    const newPic = document.createElement('img'); //<img src={image url of user} />
+    const cardInfoDiv = document.createElement('div'); // <div class="card-info">
+      //Children of cardInfoDiv
+      const nameH3 = document.createElement('h3'); //<h3 class="name">{users name}</h3>
+      const userNameP = document.createElement('p');// <p class="username">{users user name}
+      const locationP = document.createElement('p'); //<p>Location: {users location}</p>
+      const profileP = document.createElement('p');//<p>Profile:
+        // Child of profile
+        const gitHubAddress = document.createElement('a');  //<a href={address to users github page}>{address to users github page}</a></p> 
+      const followersP = document.createElement('p');//<p>Followers: {users followers count}</p>
+      const followingP = document.createElement('p')//<p>Following: {users following count}</p>
+      const usersBioP = document.createElement('p');//<p>Bio: {users bio}</p>
+
+  // SET STRUCTURE - appendChild()
+  cardDiv.appendChild(newPic);
+  cardDiv.appendChild(cardInfoDiv);
+    cardInfoDiv.appendChild(nameH3);
+    cardInfoDiv.appendChild(userNameP);
+    cardInfoDiv.appendChild(locationP);
+    cardInfoDiv.appendChild(profileP);
+      profileP.appendChild(gitHubAddress); // child of profileP
+    cardInfoDiv.appendChild(followersP);
+    cardInfoDiv.appendChild(followingP);
+    cardInfoDiv.appendChild(usersBioP);
+
+
+  // SET CLASS NAMES - .classList.add()
+  // classes include: card, card-info, name, username.
+  // card = cardDiv, card-info = cardInfoDiv, name = nameH3, username = userNameP
+  cardDiv.classList.add('card');
+  cardInfoDiv.classList.add('card-info');
+  nameH3.classList.add('name');
+  userNameP.classList.add('user-name');
+
+  // SET CONTENT - .textContent = object.thing
+  // newPic.src, nameH3, userNameP, locationP, profileP, gitHubAddress, followersP, followingP, usersBioP
+  //use object as argument
+  newPic.src = object.avatar_url;
+  nameH3.textContent = object.name;
+  userNameP.textContent = object.login; //login: "Lfritze"
+  locationP.textContent = `Location: ${object.location || 'null'}`; 
+  profileP.textContent = `Profile: `
+  gitHubAddress.href = object.html_url;
+  followersP.textContent = `Followers: ${object.followers}`;
+  followingP.textContent = `Following ${object.following}`;
+  usersBioP.textContent = `Bio: ${object.bio || 'null'}`;
+
+  return cardDiv;
+}
+
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
+
+
 
 <div class="card">
   <img src={image url of user} />
